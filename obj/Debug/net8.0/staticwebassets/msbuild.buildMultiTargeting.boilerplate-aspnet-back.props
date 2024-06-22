@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/boilerplate-aspnet-back.props" />
+</Project>

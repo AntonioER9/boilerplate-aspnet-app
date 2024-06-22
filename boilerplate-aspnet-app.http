@@ -1,0 +1,6 @@
+@boilerplate_aspnet_app_HostAddress = http://localhost:5291
+
+GET {{boilerplate_aspnet_app_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
