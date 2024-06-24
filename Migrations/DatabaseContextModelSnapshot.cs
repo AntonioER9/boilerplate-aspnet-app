@@ -53,6 +53,9 @@ namespace boilerplate_aspnet_app.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
                     b.HasKey("ProductID");
 
                     b.HasIndex("BrandID");

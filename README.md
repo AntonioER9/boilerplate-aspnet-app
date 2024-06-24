@@ -9,7 +9,13 @@
 ```
 docker-compose up -d
 ```
+6. Execute migrations:
 
-6. Run the application: ```dotnet run```
+```
+dotnet ef migrations add InitDB
+dotnet ef database update
+```
+
+7. Run the application: ```dotnet run```
  
  
