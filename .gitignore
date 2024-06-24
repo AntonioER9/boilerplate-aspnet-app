@@ -6,3 +6,5 @@ postgres/
 appsettings.json
 
 /Migrations
+
+.env

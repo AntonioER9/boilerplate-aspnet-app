@@ -2,7 +2,7 @@
 # Boilerplate API
 
 1. Clone the project
-3. Clone file ```appsettings.Development.json``` and rename it to ```appsettings.json```
+3. Clone file ```.env.template``` and rename it to ```.env```
 4. Change environment variables
 5. Raise the PostgreSQL database container
 

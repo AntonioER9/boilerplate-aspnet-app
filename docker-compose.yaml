@@ -8,8 +8,8 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_PASSWORD: MySecr3tPassWord@as2
-      POSTGRES_DB: BoilerplateDB
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     container_name: boilerplate-aspnet-db
     volumes:
       - ./postgres:/var/lib/postgresql/data
