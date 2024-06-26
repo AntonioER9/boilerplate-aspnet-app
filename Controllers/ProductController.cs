@@ -1,9 +1,10 @@
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.EntityFrameworkCore;
 using DTOs;
 using Models;
+using Services;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Controllers
 {
@@ -43,9 +44,12 @@ namespace Controllers
         {
             var validationResult = await _productInsertValidator.ValidateAsync(productInsertDto);
 
-            if(!validationResult.IsValid)
-            {
+            if(!validationResult.IsValid) {
                 return BadRequest(validationResult.Erros);
+            }
+
+            if (!_productService.Validate(productInsertDto)) {
+                return BadRequest(_productService.Errors);
             }
 
             var productDto = await _productService.Add(productInsertDto);
@@ -56,9 +60,12 @@ namespace Controllers
         public async Task<ActionResult<ProductDto>> Update(int id, ProductUpdateDto productUpdateDto) {
             var validationResult = await _productUpdateValidator.ValidateAsync(productUpdateDto);
             
-            if(!validationResult.IsValid)
-            {
+            if(!validationResult.IsValid) {
                 return BadRequest(validationResult.Erros);
+            }
+
+            if (!_productService.Validate(productUpdateDto)) {
+                return BadRequest(_productService.Errors);
             }
 
             var productDto = await _productService.Update(id, productDto);
