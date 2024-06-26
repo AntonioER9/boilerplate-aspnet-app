@@ -1,14 +1,20 @@
 using Microsoft.EntityFrameworkCore;
 using Models;
+using DTOs;
+using FluentValidation;
+using Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Validators
-builder.Services.AddControllers();
+
 
 // Entity Framework
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DatabaseConnection")));
 
+// Validators
+builder.Services.AddScoped<IValidator<ProductInsertDto>, ProductInsertValidator>();
+
+builder.Services.AddControllers();
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
