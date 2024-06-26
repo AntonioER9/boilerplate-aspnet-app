@@ -13,13 +13,16 @@ namespace Controllers
     {
         private DatabaseContext _context;
         private IValidator<ProductInsertDto> _productInsertValidator;
+        private IValidator<ProductUpdateDto> _productUpdateValidator;
         public ProductController(
             DatabaseContext context,
             IValidator<ProductInsertDto> productInsertValidator,
+            IValidator<ProductUpdateDto> productUpdateValidator,
         )
         {
             _context = context;
             _productInsertValidator = productInsertValidator;
+            _productUpdateValidator = productUpdateValidator;
         }
 
         [HttpGet]

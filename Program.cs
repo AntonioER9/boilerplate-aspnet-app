@@ -7,12 +7,13 @@ using Validators;
 var builder = WebApplication.CreateBuilder(args);
 
 
-
 // Entity Framework
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DatabaseConnection")));
 
 // Validators
 builder.Services.AddScoped<IValidator<ProductInsertDto>, ProductInsertValidator>();
+builder.Services.AddScoped<IValidator<ProductUpdateDto>, ProductUpdateValidator>();
+
 
 builder.Services.AddControllers();
 // Add services to the container.
