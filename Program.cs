@@ -3,9 +3,13 @@ using Models;
 using DTOs;
 using FluentValidation;
 using Validators;
+using Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//Services
+// builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddKeyedScoped<ICommonService<ProductDto, ProductInsertDto, ProductUpdateDto>, ProductService>("productService");
 
 // Entity Framework
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DatabaseConnection")));

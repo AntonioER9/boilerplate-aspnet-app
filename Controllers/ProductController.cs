@@ -11,28 +11,31 @@ namespace Controllers
     [Route("api/[controller]")]
     public class ProductController : ControllerBase
     {
-        private DatabaseContext _context;
+
         private IValidator<ProductInsertDto> _productInsertValidator;
         private IValidator<ProductUpdateDto> _productUpdateValidator;
+        private ICommonService<ProductDto, ProductInsertDto, ProductUpdateDto> _productService;
         public ProductController(
-            DatabaseContext context,
             IValidator<ProductInsertDto> productInsertValidator,
             IValidator<ProductUpdateDto> productUpdateValidator,
+            [FromKeyedServices("productService")] ICommonService<ProductDto, ProductInsertDto, ProductUpdateDto> productService,
         )
         {
-            _context = context;
             _productInsertValidator = productInsertValidator;
             _productUpdateValidator = productUpdateValidator;
+            _productService = productService;
         }
 
         [HttpGet]
         public async Task<IEnumerable<ProductDto>> Get() {
-            
+            await _productService.Get();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDto>> GetById(int id) {
+            var productDto = await _productService.GetById(id);
 
+            return productDto == null ? NotFound() : Ok(productDto);
         }
 
         [HttpPost]
@@ -45,6 +48,8 @@ namespace Controllers
                 return BadRequest(validationResult.Erros);
             }
 
+            var productDto = await _productService.Add(productInsertDto);
+            return CreatedAtAction(nameof(GetById), new { id = productDto.Id }, productDto);
         }
 
         [HttpPut("{id}")]
@@ -55,11 +60,18 @@ namespace Controllers
             {
                 return BadRequest(validationResult.Erros);
             }
+
+            var productDto = await _productService.Update(id, productDto);
+
+            return productDto == null ? NotFound() : Ok(productDto);
+
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ProductDto>> Delete(int id) {
-
+        public async Task<ActionResult<ProductDto>> Delete(int id) 
+        {
+            var productDto = await _productService.Delete(id);
+            return productDto == null ? NotFound() : Ok(productDto);
         }
     }
 }
