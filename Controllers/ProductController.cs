@@ -49,11 +49,16 @@ namespace Controllers
 
         [HttpPut("{id}")]
         public async Task<ActionResult<ProductDto>> Update(int id, ProductUpdateDto productUpdateDto) {
-
+            var validationResult = await _productUpdateValidator.ValidateAsync(productUpdateDto);
+            
+            if(!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Erros);
+            }
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id) {
+        public async Task<ActionResult<ProductDto>> Delete(int id) {
 
         }
     }
