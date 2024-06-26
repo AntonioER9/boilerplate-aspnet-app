@@ -1,4 +1,5 @@
 using Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repository
 {
@@ -18,10 +19,11 @@ namespace Repository
       _context.Products.Attach(product);
       _context.Products.Entry(product).State = EntityState.Modified;
     }
-    public void Delete(Product product) => _context.Products.remove(product)
+    public void Delete(Product product) => _context.Products.Remove(product);
     public async Task Save() => await _context.SaveChangesAsync();
 
-    public IEnumerable<Product> Search(Func<Product, bool> filter) => _context.Products.Where(filter).ToList();
+    public IEnumerable<Product> Search(Func<Product, bool> filter) => 
+      _context.Products.Where(filter).ToList();
   }
 
 }

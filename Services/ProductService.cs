@@ -53,11 +53,11 @@ namespace Services
       var product = await _productRepository.GetById(id);
 
       if(product != null) {
-        product = _mapper.Map<productUpdateDto, Product>(productUpdateDto, product);
+        product = _mapper.Map<ProductUpdateDto, Product>(productUpdateDto, product);
         _productRepository.Update(product);
         await _productRepository.Save();
 
-        var productDto = _mapper.Map<productDto>(product);
+        var productDto = _mapper.Map<ProductDto>(product);
         return productDto;
       }
 
@@ -67,7 +67,7 @@ namespace Services
       var product = await _productRepository.GetById(id);
 
       if(product != null) {
-        var productDto = _mapper.Map<productDto>(product);
+        var productDto = _mapper.Map<ProductDto>(product);
         
         _productRepository.Delete(product);
         await _productRepository.Save();

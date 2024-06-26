@@ -1,6 +1,7 @@
 using DTOs;
 using Models;
 using Services;
+using Validators;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,7 @@ namespace Controllers
         public ProductController(
             IValidator<ProductInsertDto> productInsertValidator,
             IValidator<ProductUpdateDto> productUpdateValidator,
-            [FromKeyedServices("productService")] ICommonService<ProductDto, ProductInsertDto, ProductUpdateDto> productService,
+            [FromKeyedServices("productService")] ICommonService<ProductDto, ProductInsertDto, ProductUpdateDto> productService
         )
         {
             _productInsertValidator = productInsertValidator;
@@ -28,9 +29,7 @@ namespace Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<ProductDto>> Get() {
-            await _productService.Get();
-        }
+        public async Task<IEnumerable<ProductDto>> Get() => await _productService.Get();
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDto>> GetById(int id) {
@@ -45,7 +44,7 @@ namespace Controllers
             var validationResult = await _productInsertValidator.ValidateAsync(productInsertDto);
 
             if(!validationResult.IsValid) {
-                return BadRequest(validationResult.Erros);
+                return BadRequest(validationResult.Errors);
             }
 
             if (!_productService.Validate(productInsertDto)) {
@@ -61,14 +60,14 @@ namespace Controllers
             var validationResult = await _productUpdateValidator.ValidateAsync(productUpdateDto);
             
             if(!validationResult.IsValid) {
-                return BadRequest(validationResult.Erros);
+                return BadRequest(validationResult.Errors);
             }
 
             if (!_productService.Validate(productUpdateDto)) {
                 return BadRequest(_productService.Errors);
             }
 
-            var productDto = await _productService.Update(id, productDto);
+            var productDto = await _productService.Update(id, productUpdateDto);
 
             return productDto == null ? NotFound() : Ok(productDto);
 
